@@ -1,5 +1,14 @@
 use std::mem;
 
+/*
+ * A Bad Singly-Linked Stack
+ * Adding basic features:
+ * - Push to top of stack
+ * - Pop from top of stack
+ * - Clear stack using Drop trait
+ * - Basic Test method
+ */
+
 /// Struct representing nodes of Linked List
 struct Node {
     elem: i32,
@@ -15,6 +24,7 @@ enum Link {
     // Can never be a null pointer as Node will expect an element value.
     More(Box<Node>),
 }
+// In hindsight, this looks a lot like Rust's Option type.
 
 /// Struct representing the Linked List that keeps track of the head pointer.
 pub struct List {
@@ -27,7 +37,7 @@ impl List {
         List { head: Link::Empty }
     }
 
-    /// Inserts value at the beginning of the Linked List
+    /// Inserts value at the top of the Linked List stack
     pub fn push(&mut self, elem: i32) {
         // self.head is left unallocated when value is moved to next.
         // This is not allowed.
@@ -41,7 +51,7 @@ impl List {
         self.head = Link::More(new_node);
     }
 
-    /// Remove the first value from the Linked List and return it
+    /// Remove the first value from the Linked List stack and return it
     pub fn pop(&mut self) -> Option<i32> {
         match mem::replace(&mut self.head, Link::Empty) {
             Link::Empty => None, // If list is empty
@@ -78,7 +88,7 @@ mod test {
     /// Testing basic list functionalities
     #[test]
     fn basics() {
-        let mut list = List::new();
+        let mut list: List = List::new();
 
         // Check if empty list behaves right
         assert_eq!(list.pop(), None);
