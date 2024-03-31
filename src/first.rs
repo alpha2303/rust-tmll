@@ -55,6 +55,22 @@ impl List {
     }
 }
 
+impl Drop for List {
+    fn drop(&mut self) {
+        // cur_link is used to get the Link entity, could be empty or a node box,
+        // used for list traversal.
+        let mut cur_link: Link = mem::replace(&mut self.head, Link::Empty);
+        // while cur_link contains a valid node
+        while let Link::More(mut node_box) = cur_link {
+            cur_link = mem::replace(&mut node_box.next, Link::Empty);
+            // current node is moved to local scope while cur_link is assigned the next node for traversal
+            // the next pointer of current node is also replaced with null pointer to prevent unbound recursion during drop.
+            // Current node in local scope get dropped at the end of the loop.
+            // The node stored in the box also gets deallocated in this process.
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::List;
