@@ -3,8 +3,9 @@
  * - Converted the Link enum into an Option type
  * - Replaced mem::replace and match with in-built Option methods
  * - Introduced Generic Type
- * - Peek and mutable peek 
+ * - Peek and mutable peek
  * - Convert into iterator using IntoIter, Iter, IterMut
+ * - Introduced lifetime specification
  */
 
 // Converting Link into an Option type instead of an enum,
